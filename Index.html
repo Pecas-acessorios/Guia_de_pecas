@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CVB Premium - Venda Técnica Nexpro Iveco</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,600&display=swap');
+
+:root {
+    --azul-escuro: #002C5F;
+    --azul-medio: #3A86C8;
+    --azul-claro: #EAF1FA;
+    --cinza-fundo: #F2F5F9;
+    --cinza-texto: #4A5568;
+    --cinza-borda: #E2E8F0;
+    --vermelho-alerta: #C0392B;
+    --sombra-card: 0 4px 16px rgba(0, 44, 95, 0.07);
+    --sombra-elevada: 0 8px 28px rgba(0, 44, 95, 0.12);
+}
+
+* { box-sizing: border-box; }
+
+body {
+    font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+    background: var(--cinza-fundo);
+    margin: 0;
+    color: #1A202C;
+    -webkit-font-smoothing: antialiased;
+}
+
+header {
+    background: linear-gradient(135deg, var(--azul-escuro) 0%, #013E7E 100%);
+    color: white;
+    padding: 32px 28px;
+    border-bottom: 4px solid var(--azul-medio);
+}
+header h1 {
+    margin: 0;
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 28px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+}
+header p {
+    margin: 6px 0 0 0;
+    font-size: 14px;
+    color: #C9DCF2;
+}
+
+main {
+    max-width: 1300px;
+    margin: auto;
+    padding: 28px 20px 60px;
+}
+
+.busca-container {
+    margin-bottom: 20px;
+}
+
+input {
+    width: 100%;
+    padding: 15px 16px;
+    font-family: inherit;
+    font-size: 16px;
+    border: 1.5px solid var(--cinza-borda);
+    border-radius: 8px;
+    box-sizing: border-box;
+    background: white;
+    color: #1A202C;
+    transition: border-color .15s ease, box-shadow .15s ease;
+}
+input::placeholder { color: #A0AEC0; }
+input:focus {
+    outline: none;
+    border-color: var(--azul-medio);
+    box-shadow: 0 0 0 3px rgba(58, 134, 200, 0.15);
+}
+
+/* === LAYOUT DASHBOARD DUPLO === */
+.dashboard-imagens {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-bottom: 24px;
+}
+
+@media (max-width: 900px) {
+    .dashboard-imagens { grid-template-columns: 1fr; }
+}
+
+.painel-motor {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: var(--sombra-card);
+    border-top: 4px solid var(--azul-medio);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.painel-titulo {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--azul-escuro);
+    margin-bottom: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    width: 100%;
+    text-align: center;
+    border-bottom: 1px solid var(--cinza-borda);
+    padding-bottom: 8px;
+}
+
+/* Painel Esquerdo: Mapa Interativo com Imagem Antiga */
+.mapa-interativo-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 450px;
+    aspect-ratio: 1.35 / 1;
+    background: #fff;
+    border: 1.5px solid var(--cinza-borda);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.img-mapa-base {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+}
+
+/* Zonas de clique absolutas mapeadas sobre o diagrama técnico antigo */
+.zona-clique {
+    position: absolute;
+    border: 2px solid transparent;
+    border-radius: 6px;
+    cursor: pointer;
+    background: rgba(58, 134, 200, 0.0);
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.zona-clique:hover {
+    background: rgba(0, 44, 95, 0.1);
+    border-color: var(--azul-medio);
+}
+.zona-clique.ativa {
+    background: rgba(0, 44, 95, 0.15);
+    border-color: var(--azul-escuro);
+    box-shadow: 0 0 8px rgba(0, 44, 95, 0.3);
+}
+.zona-label {
+    font-size: 10px;
+    font-weight: 700;
+    background: var(--azul-escuro);
+    color: white;
+    padding: 2px 6px;
+    border-radius: 4px;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    pointer-events: none;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+.zona-clique:hover .zona-label, .zona-clique.ativa .zona-label {
+    opacity: 1;
+}
+
+/* Posicionamento estratégico das zonas sobre o motor antigo */
+.z-superior     { top: 8%;  left: 18%; width: 40%; height: 20%; }
+.z-admissao     { top: 2%;  left: 60%; width: 28%; height: 25%; }
+.z-transmissao  { top: 50%; left: 70%; width: 30%; height: 42%; }
+.z-arrefecimento{ top: 30%; left: 2%;  width: 16%; height: 40%; }
+.z-combustivel  { top: 32%; left: 22%; width: 35%; height: 25%; }
+.z-inferior     { top: 58%; left: 22%; width: 45%; height: 22%; }
+.z-lubrificacao { top: 82%; left: 25%; width: 40%; height: 16%; }
+
+/* Painel Direito: Janela de Visualização Máscara Sprite Imagem Nova */
+.motor-sprite-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 450px;
+    aspect-ratio: 1.35 / 1; 
+    overflow: hidden;
+    border: 1.5px solid var(--cinza-borda);
+    border-radius: 8px;
+    background: white;
+}
+
+.motor-sprite-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 400%;  
+    height: 200%; 
+    object-fit: fill;
+    transition: transform 0.45s cubic-bezier(0.25, 1, 0.5, 1);
+    transform: translate(-75%, -50%); 
+}
+
+.chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+.chip {
+    padding: 7px 14px;
+    border-radius: 20px;
+    border: 1.5px solid var(--cinza-borda);
+    background: white;
+    color: var(--cinza-texto);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all .15s ease;
+}
+.chip:hover {
+    border-color: var(--azul-medio);
+    color: var(--azul-escuro);
+}
+.chip.ativo {
+    background: var(--azul-escuro);
+    border-color: var(--azul-escuro);
+    color: white;
+}
+
+.card {
+    background: white;
+    padding: 28px 30px;
+    border-radius: 10px;
+    box-shadow: var(--sombra-card);
+    border-left: 5px solid var(--azul-escuro);
+}
+
+h2 {
+    color: var(--azul-escuro);
+    margin-top: 0;
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 24px;
+    font-weight: 600;
+    border-bottom: 2px solid var(--azul-claro);
+    padding-bottom: 12px;
+}
+
+.resumo-resultado {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    margin-bottom: 6px;
+}
+.resumo-texto {
+    color: var(--cinza-texto);
+    font-size: 14px;
+}
+.indicador-prioridade {
+    display: flex;
+    gap: 10px;
+    font-size: 13px;
+}
+.indicador-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 12px;
+    border-radius: 20px;
+    background: var(--cinza-fundo);
+    font-weight: 600;
+    color: var(--cinza-texto);
+}
+.dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+.dot-obrigatoria { background: var(--azul-escuro); }
+.dot-recomendada { background: var(--azul-medio); }
+
+.btn-copiar {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    border-radius: 7px;
+    border: 1.5px solid var(--cinza-borda);
+    background: white;
+    color: var(--azul-escuro);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all .15s ease;
+    font-family: inherit;
+}
+.btn-copiar:hover { background: var(--azul-claro); border-color: var(--azul-medio); }
+.btn-copiar.copiado { background: #1E7E34; border-color: #1E7E34; color: white; }
+
+.tbl {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 18px;
+}
+.tbl th {
+    background: var(--azul-claro);
+    border-bottom: 2px solid var(--azul-escuro);
+    padding: 13px 12px;
+    text-align: left;
+    font-size: 13px;
+    color: var(--azul-escuro);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+}
+.tbl td {
+    border-bottom: 1px solid var(--cinza-borda);
+    padding: 16px 12px;
+    font-size: 14px;
+    vertical-align: top;
+    line-height: 1.5;
+}
+.tbl tr:hover td { background: #FAFCFE; }
+
+.badge {
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    display: inline-block;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+}
+.badge-obrigatoria { background: var(--azul-escuro); color: white; }
+.badge-recomendada { background: var(--azul-medio); color: white; }
+
+.verif-list { margin: 0; padding-left: 18px; }
+.verif-list li { margin-bottom: 5px; }
+.no-verif { color: #A0AEC0; font-style: italic; font-size: 13px; }
+
+.rodape-nota {
+    margin-top: 24px;
+    font-size: 12px;
+    color: #A0AEC0;
+    border-top: 1px solid var(--cinza-borda);
+    padding-top: 16px;
+}
+
+#tela-login {
+    max-width: 400px;
+    margin: 90px auto;
+    background: white;
+    padding: 40px 36px;
+    border-radius: 14px;
+    box-shadow: var(--sombra-elevada);
+    text-align: center;
+}
+#tela-login h2 {
+    border-bottom: none;
+    margin-bottom: 6px;
+    padding-bottom: 0;
+}
+#tela-login p {
+    color: var(--cinza-texto);
+    font-size: 13.5px;
+    margin-bottom: 22px;
+}
+#tela-login input { margin-bottom: 12px; }
+#tela-login button {
+    width: 100%;
+    padding: 14px;
+    background: var(--azul-escuro);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 6px;
+    transition: background .15s ease;
+    font-family: inherit;
+}
+#tela-login button:hover { background: var(--azul-medio); }
+#login-erro {
+    color: var(--vermelho-alerta);
+    font-size: 13px;
+    margin-top: 12px;
+    min-height: 16px;
+}
+#app-conteudo { display: none; }
+
+@media (max-width: 640px) {
+    .tbl, .tbl thead, .tbl tbody, .tbl th, .tbl td, .tbl tr { display: block; }
+    .tbl th { display: none; }
+    .tbl tr { margin-bottom: 18px; border: 1px solid var(--cinza-borda); border-radius: 8px; padding: 12px; }
+    .tbl td { border: none; padding: 6px 0; }
+    .tbl td::before { content: attr(data-label); display: block; font-size: 11px; font-weight: 700; color: var(--azul-medio); text-transform: uppercase; margin-bottom: 3px; }
+}
+</style>
+</head>
+<body>
+
+<!-- Tela de Acesso -->
+<div id="tela-login">
+  <h2>CVB Premium</h2>
+  <p>Acesso restrito. Informe a senha para continuar.</p>
+  <input type="password" id="login-senha" placeholder="Senha de acesso">
+  <button id="btn-login">Entrar</button>
+  <div id="login-erro"></div>
+</div>
+
+<!-- Conteúdo do App -->
+<div id="app-conteudo">
+  <header>
+    <h1>CVB Premium - Venda Técnica</h1>
+    <p>Análise de Peças de Reposição Linha Nexpro Iveco</p>
+  </header>
+
+  <main>
+    <div class="busca-container">
+        <input id="busca" list="pecas" placeholder="Digite ou selecione a peça principal... (Ctrl+K)">
+        <datalist id="pecas"></datalist>
+    </div>
+    
+    <div id="chips-categoria" class="chips"></div>
+
+    <!-- DASHBOARD DE IMAGENS SINCRONIZADO -->
+    <div class="dashboard-imagens">
+      
+      <!-- Painel Esquerdo: Imagem Antiga como Seletor Espacial -->
+      <div class="painel-motor">
+        <div class="painel-titulo">Mapeamento Técnico: Clique na Região Desejada</div>
+        <div class="mapa-interativo-wrapper">
+          <img class="img-mapa-base" src="image_25ed21.png.webp" alt="Diagrama de Referência Geral">
+          
+          <!-- Hotspots sobrepostos vinculados às categorias -->
+          <div class="zona-clique z-superior" data-cat="Motor — Parte Superior"><span class="zona-label">Superior</span></div>
+          <div class="zona-inferior zona-clique z-inferior" data-cat="Motor — Parte Inferior"><span class="zona-label">Inferior</span></div>
+          <div class="zona-clique z-transmissao" data-cat="Transmissão de Força"><span class="zona-label">Transmissão</span></div>
+          <div class="zona-clique z-arrefecimento" data-cat="Arrefecimento"><span class="zona-label">Arrefecimento</span></div>
+          <div class="zona-clique z-lubrificacao" data-cat="Lubrificação"><span class="zona-label">Lubrificação</span></div>
+          <div class="zona-clique z-admissao" data-cat="Admissão e Escape"><span class="zona-label">Admissão/Escape</span></div>
+          <div class="zona-clique z-combustivel" data-cat="Injeção e Combustível"><span class="zona-label">Injeção</span></div>
+        </div>
+      </div>
+
+      <!-- Painel Direito: Imagem Atual com Alinhamento por Máscara (Zoom) -->
+      <div class="painel-motor">
+        <div id="motor-titulo-dinamico" class="painel-titulo">Visão Geral Nexpro: Motor Completo</div>
+        <div class="motor-sprite-wrapper">
+          <img id="motor-sprite-img" class="motor-sprite-img" src="image_27aafd.png" alt="Componentes de Reposição Nexpro">
+        </div>
+      </div>
+
+    </div>
+
+    <div id="out" class="card">Utilize o diagrama técnico acima, clique nos botões de categoria ou use a barra de busca para carregar o mapeamento comercial baseado em valor.</div>
+  </main>
+</div>
+
+<!-- ===================== ACESSO POR SENHA ===================== -->
+<script>
+  const _SENHA_COD = "VHJlaW5hbWVudG8yMDI2"; 
+
+  function _decodificar(b64) {
+    return decodeURIComponent(atob(b64).split('').map(c =>
+      '%' + c.charCodeAt(0).toString(16).padStart(2, '0')
+    ).join(''));
+  }
+
+  const telaLogin = document.getElementById('tela-login');
+  const appConteudo = document.getElementById('app-conteudo');
+  const loginErroEl = document.getElementById('login-erro');
+  const inputSenha = document.getElementById('login-senha');
+
+  function tentarAcesso() {
+    const senhaDigitada = inputSenha.value;
+    if (senhaDigitada === _decodificar(_SENHA_COD)) {
+      telaLogin.style.display = 'none';
+      appConteudo.style.display = 'block';
+    } else {
+      loginErroEl.textContent = 'Senha incorreta. Tente novamente.';
+      inputSenha.value = '';
+      inputSenha.focus();
+    }
+  }
+
+  document.getElementById('btn-login').addEventListener('click', tentarAcesso);
+  inputSenha.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') tentarAcesso();
+  });
+
+  window.addEventListener('DOMContentLoaded', () => inputSenha.focus());
+</script>
+
+<!-- ===================== LÓGICA E DADOS DA APLICAÇÃO ===================== -->
+<script>
+const verificacao = {
+  "CABEÇOTE DE CILINDROS": ["Válvulas de admissão e escape", "Travas de válvulas", "Molas e retentores", "Conexões de válvulas", "Insertos de válvulas", "Assentos de válvula", "Guias de válvulas", "Conectores de combustível", "Filtros"],
+  "CARCAÇAS DOS BALANCINS": ["Parafusos de ajuste", "Respiro do óleo", "Buchas", "Anel O'Ring", "Freio motor/juntas", "Contraporca", "Eixo seguidores", "Pino guia", "Tampa de balancins", "Balancins"],
+  "COLETOR DE ADMISSÃO": ["Elemento pós-resfriador", "Mangueira de admissão de ar", "Abraçadeiras", "Juntas", "Tubo de admissão de ar", "Prisioneiros", "Porcas", "Parafusos"],
+  "COLETOR DE ESCAPE": ["Mangueiras da turbina", "Conexões e cotovelo de escape", "Tubulação de saída de escape", "Abraçadeiras", "Juntas"],
+  "TERMOSTATO": ["Acoplamento do coletor de água", "Anel O'Ring do termostato", "Mangueira do radiador", "Abraçadeiras de água", "Termostato", "Juntas"],
+  "INJETORES": ["Copos de injetor", "Bamil", "Êmbolo", "Buchões de orifícios", "Válvulas do injetor", "Filtro tela do injetor", "Contraporca", "Arruela", "Bujão", "Abraçadeira do injetor", "Selos", "Conectores elétricos", "Caneta do injetor"],
+  "BLOCO": ["Vibrabrequim e engrenagem", "Casquilhos de biela e mancal", "Bielas/Pistões", "Camisas e anéis", "Buchas de comando", "Comando, engrenagem e chaveta", "Bicos resfriadores dos pistões", "Retentores dianteiro e traseiro do virabrequim", "Amortecedor de vibração", "Volante do motor/Sensor de posição"],
+  "CONJUNTOS DE SEGUIDORES": ["Eixos", "Buchas", "Roletes", "Travas", "Filtros"],
+  "VIRABREQUIM": ["Engrenagem", "Casquilhas de biela e mancal", "Retentores traseiro e dianteiro", "Amortecedor de vibração", "Volante do motor/Carcaça do volante de inércia"],
+  "CARTER": ["Filtro tela", "Parafusos", "Tubo de sucção (pescador)", "Vareta", "Juntas", "Filtros"],
+  "TAMPA DISTRIBUIÇÃO ENGRENAGEM": ["Suporte frontal do motor", "Tampa de comando de válvulas", "Buchas", "Retentor da tampa de engrenagens", "Retentor traseiro do virabrequim", "Parafusos"],
+  "ACIONAMENTO ACESSÓRIOS": ["Eixo de acionamento", "Rolamentos", "Buchas", "Mancais de encosto", "Polia", "Porca e arruela", "Selos", "Juntas", "Correias", "Filtros"],
+  "FILTRO DE AR": ["Conexões de mangueira", "Abraçadeiras", "Cotovelo de borracha", "Redutores de borracha", "Tubos de aço", "Filtros e elementos", "Cabeçote do filtro de ar"],
+  "COMPRESSOR DE AR": ["Corpo", "Buchas", "Virabrequim/Bielas", "Pistões", "Anéis", "Juntas", "Acoplamento", "Luva de acoplamento", "Respiro", "Pino de pistão", "Governador", "Cabeçote"],
+  "CUBO DO VENTILADOR": ["Rolamentos", "Espaçador", "Eixo", "Porcas", "Arruelas", "Correias", "Válvulas"],
+  "RESFRIADOR DE ÓLEO": ["Filtros e elementos", "Retentor O'ring", "Regulador de pressão", "Mola reguladora", "Termostato"],
+  "BOMBA DE ÓLEO": ["Buchas", "Regulador de pressão", "Mola reguladora", "Filtros"],
+  "BOMBA INJETORA": ["Contrapesos", "Carcaça principal", "Tacômetro", "Filtro tela", "Mola governador", "Engrenagem da bomba", "Amortecedor de pulsação", "Parafusos", "Válvula solenoide", "Acoplamento", "Bomba de transferência"],
+  "TURBINA": ["Rolamento", "Carcaça", "Rotor/Turbina e eixo", "Mangueiras e drenos", "Conexões e cotovelo de escape", "Tubulação de escape", "Abraçadeiras", "Placa difusora", "Arruelas de pressão", "Filtros", "Prisioneiros"],
+  "BOMBA DE ÁGUA": ["Eixo", "Polia", "Rolamentos", "Selo e assento", "Engrenagem de acionamento", "Correia", "Tensionador", "Anel O'ring"]
+};
+
+const categorias = {
+  "Motor — Parte Superior": ["TAMPA DOS BALANCINS", "VÁLVULAS", "COMANDO DE VÁLVULAS", "SEGUIDORES"],
+  "Motor — Parte Inferior": ["BLOCO", "PISTÕES, CAMISAS, ANÉIS, BIELAS", "VIRABREQUIM", "CASQUILHO$ DE MANCAL", "CÁRTER", "AMORTECEDOR DE VIBRAÇÃO"],
+  "Transmissão de Força": ["TAMPA DE ENGRENAGENS", "ENGRENAGENS", "TOMADA DE FORÇA"],
+  "Arrefecimento": ["TERMOSTATO", "BOMBA DE ÁGUA", "CUBO DO VENTILADOR", "RESFRIADOR DE ÓLEO"],
+  "Lubrificação": ["BOMBA DE ÓLEO"],
+  "Admissão e Escape": ["COLETOR DE ESCAPE", "FILTRO DE AR", "COMPRESSOR DE AR", "TURBINA", "AFTERCOOLER"],
+  "Injeção e Combustível": ["INJETORES", "BOMBA DE COMBUSTÍVEL"]
+};
+
+const coordenadasTransform = {
+  "Todas": "translate(-75%, -50%)",                  
+  "Motor — Parte Superior": "translate(0%, 0%)",      
+  "Motor — Parte Inferior": "translate(-25%, 0%)",    
+  "Transmissão de Força": "translate(-50%, 0%)",      
+  "Arrefecimento": "translate(-75%, 0%)",             
+  "Lubrificação": "translate(0%, -50%)",              
+  "Admissão e Escape": "translate(-25%, -50%)",       
+  "Injeção e Combustível": "translate(-50%, -50%)"    
+};
+
+const dados = {
+  "TAMPA DOS BALANCINS": [
+    { "nome": "Carcaças dos Balancins", "prioridade": "Obrigatória", "argumento": "A montagem integrada com uma nova carcaça de balancins garante o alinhamento plano perfeito do conjunto superior, eliminando folgas de assentamento estrutural.", "risco": "Instabilidade mecânica no topo do motor, fadiga acelerada e perda de vedação de óleo sob pressão." }
+  ],
+  "VÁLVULAS": [
+    { "nome": "Cabeçote de Cilindros", "prioridade": "Obrigatória", "argumento": "Válvulas novas exigem retífica ou substituição casada do cabeçote para assegurar a estanqueidade micrométrica da câmara de combustão.", "risco": "Perda imediata de compressão, aumento expressivo no consumo de combustível e escape de gases nocivos." },
+    { "nome": "Carcaças dos Balancins", "prioridade": "Obrigatória", "argumento": "Garante que o braço oscilante exerça a força perfeitamente vertical sobre a haste da válvula, sem forças radiais desnecessárias.", "risco": "Desgaste ovalizado da guia de válvula e potencial quebra ou empenamento da haste em alta rotação." },
+    { "nome": "Coletor de Admissão", "prioridade": "Recomendada", "argumento": "Um coletor limpo e vedado garante o fluxo laminar estável de ar fresco para o preenchimento ideal comandado pelas válvulas.", "risco": "Restrição de ar ou entrada de detritos abrasivos diretamente nos assentos de válvula de admissão." },
+    { "nome": "Coletor de Escape", "prioridade": "Recomendada", "argumento": "Garante a exaustão desimpedida dos gases de queima sem contrapressão, diminuindo a carga térmica severa sobre as válvulas de escape.", "risco": "Superaquecimento localizado das válvulas traseiras e severa queima precoce dos componentes." },
+    { "nome": "Termostato", "prioridade": "Recomendada", "argumento": "Mantém o motor operando na temperatura ideal de projeto, protegendo a região das válvulas contra expansões e choques térmicos destrutivos.", "risco": "Empenamento precoce das hastes por flutuação irregular de temperatura nas galerias." },
+    { "nome": "Injetores", "prioridade": "Obrigatória", "argumento": "Assegura a pulverização de diesel estequiométrica, evitando o acúmulo indesejado de depósitos carbonizados nas Sedes de Válvula.", "risco": "Carbonização severa, travamento de válvulas abertas e grave risco de colisão com o topo do pistão." },
+    { "nome": "Turbina", "prioridade": "Recomendada", "argumento": "Garante que o fluxo dinâmico gerado pelas válvulas de escape alimente com pressão correta o caracol da turbina.", "risco": "Perda de rendimento volumétrico do motor e respostas lentas em regimes de carga pesada." }
+  ],
+  "COLETOR DE ESCAPE": [
+    { "nome": "Coletor de Admissão", "prioridade": "Recomendada", "argumento": "Equilibra a pressurização e o fluxo gasoso de entrada e saída do motor, otimizando os ciclos térmicos de admissão e exaustão.", "risco": "Desbalanço no rendimento volumétrico e aumento nas emissões de fumaça." },
+    { "nome": "Coletor de Escape", "prioridade": "Obrigatória", "argumento": "A renovación dos componentes ou juntas do próprio coletor garante fixação sem folgas contra as variações térmicas severas.", "risco": "Vazamento de gases superaquecidos e ruído metálico áspero no compartimento do motor." },
+    { "nome": "Termostato", "prioridade": "Recomendada", "argumento": "Auxilia na estabilização térmica do bloco superior impedindo pontos quentes localizados próximos à saída de escape.", "risco": "Trincas estruturais na face do cabeçote ou empenamento das extremidades do coletor." },
+    { "nome": "Acionamento Acessórios", "prioridade": "Recomendada", "argumento": "Assegura a correta proteção térmica e funcionamento mecânico estável das correias e polias próximas à zona de calor extremo.", "risco": "Ressecamento prematuro de correias e falha no acionamento de componentes vitais do motor." },
+    { "nome": "Turbina", "prioridade": "Obrigatória", "argumento": "Direciona 100% dos gases com energia cinética máxima para girar o eixo do turbocompressor, aproveitando toda a potência.", "risco": "Fuga de pressão, perda de potência severa (motor 'amarrado') e falha no enchimento da turbina." }
+  ],
+  "TERMOSTATO": [
+    { "nome": "Termostato", "prioridade": "Obrigatória", "argumento": "A troca de juntas e componentes da carcaça restabelece a perfeita circulação do líquido refrigerante, estancando o sistema contra bolhas de ar.", "risco": "Flutuação severa de temperatura e riscos imediatos de superaquecimento mecânico estrutural." }
+  ],
+  "INJETORES": [
+    { "nome": "Carcaças dos Balancins", "prioridade": "Recomendada", "argumento": "Assegura o alinhamento adequado de fixação e proteção mecânica dos chicotes e tubulações de alta pressão que cruzam a carcaça.", "risco": "Vibração excessiva nas lines de combustível e possibilidade de vazamentos internos de diesel no óleo." },
+    { "nome": "Injetores", "prioridade": "Obrigatória", "argumento": "Kits de arruelas de cobre e vedação novos vedam a câmara de alta pressão contra o retorno de gases quentes nocivos ao injetor.", "risco": "Fuga de compressão do cilindro, perda de potência e colagem do bico por borra de carvão." },
+    { "nome": "Bomba Injetora", "prioridade": "Obrigatória", "argumento": "Uma linha equilibrada de pressão gerada pela bomba garante que os injetores operem com a atomização ideal de combustível diesel.", "risco": "Pulsação irregular de combustível, falhas de ignição na partida e funcionamento ásreo em marcha lenta." }
+  ],
+  "BLOCO": [
+    { "nome": "Cabeçote de Cilindros", "prioridade": "Obrigatória", "argumento": "Item mandatório ao intervir no bloco para garantir planicidade de fechamento e estanqueidade total entre as galerias d'água e óleo.", "risco": "Queima da junta de cabeçote, infiltração de fluidos e empenamento estrutural do motor." },
+    { "nome": "Carcaças dos Balancins", "prioridade": "Obrigatória", "argumento": "Garante a integridade do circuito de lubrificação que sobe do bloco em direção ao comando de balancins superior.", "risco": "Falta de óleo no topo do motor e travamento por atrito metálico seco." },
+    { "nome": "Coletor de Admissão", "prioridade": "Obrigatória", "argumento": "Garante a alimentação de ar sem restrições ou fugas para os cilindros esculpidos na estrutura física do novo bloco.", "risco": "Fuga de pressão de admissão e perda na taxa de eficiência volumétrica do veículo." },
+    { "nome": "Coletor de Escape", "prioridade": "Obrigatória", "argumento": "Expele os resíduos térmicos da combustão pós-explosão, salvaguardando a liga de aço.", "risco": "Altas temperaturas localizadas e riscos de fadiga de material por estresse térmico." },
+    { "nome": "Termostato", "prioridade": "Obrigatória", "argumento": "Elemento crucial para manter o bloco na temperatura homogênea de trabalho, prevenindo trincas por dilatação irregular.", "risco": "Choque térmico destrutivo e perda completa da garantia estrutural do bloco." },
+    { "nome": "Injetores", "prioridade": "Obrigatória", "argumento": "Alimentação uniforme que previne pontos de queima com excesso de combustível que possam lavar a película de óleo das camisas.", "risco": "Riscos severos nas camisas de cilindro, gripagem de pistões e fumaça preta contínua." },
+    { "nome": "Bloco", "prioridade": "Obrigatória", "argumento": "Revisão e novos componentes de fixação genericamente aumentam a rigidez de todo o conjunto de força inferior.", "risco": "Desalinhamento axial dos mancais principais e vibração harmônica prejudicial." },
+    { "nome": "Conjuntos de Seguidores", "prioridade": "Obrigatória", "argumento": "Garante a perfeita transferência de movimento mecânico vertical sem folgas abrasivas nas furações do bloco.", "risco": "Desgaste prematuro nos alojamentos de tucho do bloco, gerando folgas irrecuperáveis." },
+    { "nome": "Virabrequim", "prioridade": "Obrigatória", "argumento": "O virabrequim deve assentar perfeitamente alinhado com a linha de centro dos mancais do bloco com folgas nominais estritas.", "risco": "Desgaste ovalizado das bronzinas, travamento do eixo de manivelas e quebra catastrófica do bloco." },
+    { "nome": "Carter", "prioridade": "Obrigatória", "argumento": "Veda o reservatório inferior contra o bloco, mantendo o volume total de lubrificante protegido de contaminações externas.", "risco": "Vazamento massivo de óleo do motor e queda súbita da pressão hidráulica de lubrificação." },
+    { "nome": "Tampa Distribuição Engrenagem", "prioridade": "Obrigatória", "argumento": "Protege o sincronismo dianteiro fixado na face do bloco contra poeiras e agentes abrasivos externos.", "risco": "Contaminação do óleo do motor por partículas rígidas e desgaste precoce dos dentes das engrenagens." },
+    { "nome": "Acionamento Acessórios", "prioridade": "Obrigatória", "argumento": "Assegura o torque livre de componentes secundários sem impor esforços radiais desalinhados contra a frente do bloco.", "risco": "Desgaste nas buchas frontais e ruídos de desalinhamento de polias." },
+    { "nome": "Filtro de Ar", "prioridade": "Obrigatória", "argumento": "Retém partículas que riscam severamente as paredes internas dos cilindros do bloco, agindo como barreira de segurança vital.", "risco": "Desgaste abrasivo acelerado das camisas (motor 'soprando' no respiro) e perda de compressão." },
+    { "nome": "Compressor de Ar", "prioridade": "Obrigatória", "argumento": "Depende do alinhamento mecânico e do suprimento de óleo/água direto vindos das galerias de distribuição do bloco.", "risco": "Falha de lubrificação do compressor ou contaminação do sistema pneumático do veículo." },
+    { "nome": "Cubo do Ventilador", "prioridade": "Obrigatória", "argumento": "Mantém o fluxo de ar de arrefecimento frontal ideal para a dissipation de calor de todo o bloco fundido.", "risco": "Deficiência de resfriamento e elevação rápida da temperatura de trabalho do motor." },
+    { "nome": "Resfriador de Óleo", "prioridade": "Obrigatória", "argumento": "Garante que o óleo lubrificante entre no bloco na temperatura ideal para formar o filme protetor estável nos mancais.", "risco": "Perda de viscosidade do óleo por calor excessivo e rápido desgaste de todos os componentes internos." },
+    { "nome": "Bomba de Óleo", "prioridade": "Obrigatória", "argumento": "Componente vital que pressuriza o fluido por todas as microgalerias internas do bloco em direção aos componentes superiores.", "risco": "Ausência de lubrificação sob pressão, atrito seco de metal com metal e motor fundido em poucos minutos." },
+    { "nome": "Bomba Injetora", "prioridade": "Obrigatória", "argumento": "Mantém o perfeito sincronismo de injeção casado com os tempos mecânicos das camisas e pistões do bloco.", "risco": "Ponto de injeção atrasado ou adiantado, causando queima ineficiente e batida de pino mecânica." },
+    { "nome": "Turbina", "prioridade": "Obrigatória", "argumento": "Garante o correto volume de ar sob pressão ideal para preencher a demanda de combustão de alta eficiência nos cilindros do bloco.", "risco": "Perda acentuada de torque em subidas e aumento excessivo na emissão de fumaça preta pelo escape." },
+    { "nome": "Bomba de Água", "prioridade": "Obrigatória", "argumento": "Garante o fluxo contínuo de fluido refrigerante pelas camisas d'água internas que cercam os cilindros do bloco.", "risco": "Superaquecimento localizado severo, gerando trincas permanentes na estrutura fundida do bloco." }
+  ],
+  "PISTÕES, CAMISAS, ANÉIS, BIELAS": [
+    { "nome": "Cabeçote de Cilindros", "prioridade": "Obrigatória", "argumento": "O perfeito fechamento superior garante a altíssima taxa de compressão exigida pelos novos pistões e anéis originais.", "risco": "Fuga de compressão, queima incompleta e perda de eficiência energética do motor." },
+    { "nome": "Carcaças dos Balancins", "prioridade": "Obrigatória", "argumento": "Garante o correto sincronismo mecânico superior, sincronizado com o movimento retilíneo alternado dos pistões.", "risco": "Risco de choque mecânico severo entre as válvulas e a cabeça do pistão." }
+  ],
+  "SEGUIDORES": [
+    { "nome": "Carcaças dos Balancins", "prioridade": "Obrigatória", "argumento": "O acoplamento correto com os seguidores elimina folgas de ricochete mecânico no acionamento superior do motor.", "risco": "Desgaste severo na face de contato dos tuchos/seguidores e ruídos metálicos anormais." },
+    { "nome": "Conjuntos de Seguidores", "prioridade": "Obrigatória", "argumento": "A renovação física dos seguidores garante o perfeito deslizamento hidrodinâmico contra os cames da árvore de distribuição.", "risco": "Desgaste plano ou escoriação dos roletes, inutilizando o curso correto de abertura de válvulas." }
+  ],
+  "COMANDO DE VÁLVULAS": [
+    { "nome": "Bloco", "prioridade": "Obrigatória", "argumento": "Garante o perfeito alinhamento radial das buchas do comando dentro do alojamento estrutural usinado no bloco.", "risco": "Desalinhamento do comando, gerando flutuação de válvulas e danos ao bloco metálico." }
+  ],
+  "CASQUILHO$ DE MANCAL": [
+    { "nome": "Bloco", "prioridade": "Obrigatória", "argumento": "Os casquilhos de mancal novos restabelecem a folga de óleo nominal correta com os alojamentos usinados do bloco.", "risco": "Giro de bronzina no alojamento do bloco, inutilizando a estrutura do motor por completo." },
+    { "nome": "Virabrequim", "prioridade": "Obrigatória", "argumento": "Garantem o perfeito deslizamento hidrodinâmico do virabrequim sobre o filme de óleo, sem atrito direto metal-metal.", "risco": "Eixo virabrequim riscado, superaquecido e severamente travado (motor fundido)." }
+  ],
+  "VIRABREQUIM": [
+    { "nome": "Bloco", "prioridade": "Obrigatória", "argumento": "Assegura o alinhamento axial perfeito do virabrequim dentro dos mancais usinados do bloco do motor.", "risco": "Desgaste desalinhado das faces de encosto (folga axial excessiva) e quebra do eixo por fadiga." }
+  ],
+  "AMORTECEDOR DE VIBRAÇÃO": [
+    { "nome": "Virabrequim", "prioridade": "Obrigatória", "argumento": "Neutraliza as perigosas ondas harmônicas de torção geradas pelas explosões nos cilindros protegendo a integridade do virabrequim.", "risco": "Quebra catastrófica do eixo virabrequim ao meio devido à fadiga torcional cumulativa." }
+  ],
+  "CÁRTER": [
+    { "nome": "Carter", "prioridade": "Obrigatória", "argumento": "A troca da junta de vedação e do bujão de escoamento elimina vazamentos e garante o correto nível do reservatório inferior.", "risco": "Gotejamento contínuo de fluido lubrificante, risco de falta de óleo e contaminação ambiental." }
+  ],
+  "TAMPA DE ENGRENAGENS": [
+    { "nome": "Tampa Distribuição Engrenagem", "prioridade": "Obrigatória", "argumento": "Veda e isola o trem de engrenagens de distribuição contra impurezas secas e abrasivos do ambiente externo.", "risco": "Desgaste acelerado nos dentes das engrenagens por contaminação de poeira." }
+  ],
+  "TOMADA DE FORÇA": [
+    { "nome": "Bomba de Óleo", "prioridade": "Obrigatória", "argumento": "Garante o fluxo de óleo lubrificante necessário sob pressão estável para refrigerar e lubrificar os rolamentos da tomada de força.", "risco": "Superaquecimento da caixa de transmissão e travamento mecânico por atrito seco." }
+  ],
+  "BOMBA DE ÁGUA": [
+    { "nome": "Bomba de Água", "prioridade": "Obrigatória", "argumento": "Substituir a bomba de água restabelece a pressão hidráulica nominal correta do sistema de arrefecimento do motor.", "risco": "Interrupção do fluxo de refrigeração, superaquecimento rápido e queima da junta de cabeçote." }
+  ],
+  "CUBO DO VENTILADOR": [
+    { "nome": "Cubo do Ventilador", "prioridade": "Obrigatória", "argumento": "Garante o livre e suave giro da hélice do radiador sem folgas nos rolamentos internos evitando oscilações axiais.", "risco": "Despriendimento da hélice em alta rotação, destruindo o radiador e mangueiras do sistema." }
+  ],
+  "BOMBA DE ÓLEO": [
+    { "nome": "Bomba de Óleo", "prioridade": "Obrigatória", "argumento": "A instalação de uma nova bomba original garante a vazão de fluido necessária para todos os componentes móveis.", "risco": "Falta de lubrificação severa nas partes altas do motor e motor fundido." }
+  ],
+  "RESFRIADOR DE ÓLEO": [
+    { "nome": "Resfriador de Óleo", "prioridade": "Obrigatória", "argumento": "A troca de juntas e o-rings do trocador de calor impede de forma absoluta a contaminação cruzada de fluidos internos.", "risco": "Mistura catastrófica de óleo lubrificante na água do radiador ou água invadindo o cárter do motor." }
+  ],
+  "TURBINA": [
+    { "nome": "Turbina", "prioridade": "Obrigatória", "argumento": "Garante a correta lubrificação e retorno livre de óleo das galerias centrais do eixo que opera em altíssima rotação.", "risco": "Falta de lubrificação inicial gerando travamento do eixo do turbocompressor novo." }
+  ],
+  "AFTERCOOLER": [
+    { "nome": "Coletor de Admissão", "prioridade": "Obrigatória", "argumento": "O perfeito acoplamento mecânico com o radiador Aftercooler assegura que o ar resfriado e denso entre sem perdas nos cilindros.", "risco": "Fuga de pressão de admissão, gerando forte perda de potência e fumaça escura no escape." }
+  ],
+  "BOMBA DE COMBUSTÍVEL": [
+    { "nome": "Injetores", "prioridade": "Obrigatória", "argumento": "Uma bomba estável envia combustível sem oscilações de vazão protegendo a integridade das agulhas dos injetores.", "risco": "Falhas graves de aceleração sob carga e baixa eficiência na combustão diesel." }
+  ],
+  "FILTRO DE AR": [
+    { "nome": "Filtro de Ar", "prioridade": "Obrigatória", "argumento": "A substituição periódica do elemento filtrante garante que o ar aspirado esteja 100% limpo, sem restringir a entrada.", "risco": "Saturação precoce, perda de potência por restrição de ar e aumento severo do consumo." }
+  ],
+  "COMPRESSOR DE AR": [
+    { "nome": "Compressor de Ar", "prioridade": "Obrigatória", "argumento": "A correta fixação de juntas da base restabelece a pressurização de ar segura do circuito de freios pneumáticos.", "risco": "Perda de eficiência na carga dos balões de ar e falhas de segurança no sistema de frenagem do veículo." }
+  ]
+};
+
+const dl = document.getElementById('pecas');
+const chipsContainer = document.getElementById('chips-categoria');
+const imgSprite = document.getElementById('motor-sprite-img');
+const motorTituloDin = document.getElementById('motor-titulo-dinamico');
+let categoriaAtiva = null;
+
+function popularDatalist(filtroChaves) {
+  dl.innerHTML = '';
+  const chaves = filtroChaves || Object.keys(dados);
+  chaves.slice().sort().forEach(x => {
+    let o = document.createElement('option');
+    o.value = x;
+    dl.appendChild(o);
+  });
+}
+popularDatalist();
+
+function atualizarSpriteEHotspots() {
+  const chave = categoriaAtiva || "Todas";
+  const transformValue = coordenadasTransform[chave] || coordenadasTransform["Todas"];
+  
+  if (imgSprite) {
+    imgSprite.style.transform = transformValue;
+  }
+  
+  motorTituloDin.textContent = categoriaAtiva ? `Sistema em Destaque: ${categoriaAtiva}` : "Visão Geral Nexpro: Motor Completo";
+
+  // Sincroniza a classe ativa nos hotspots visuais do mapa esquerdo
+  document.querySelectorAll('.zona-clique').forEach(zona => {
+    if (zona.dataset.cat === categoriaAtiva) {
+      zona.classList.add('ativa');
+    } else {
+      zona.classList.remove('ativa');
+    }
+  });
+}
+
+function renderChips() {
+  let html = `<button type="button" class="chip${categoriaAtiva === null ? ' ativo' : ''}" data-cat="">Todas as Peças</button>`;
+  Object.keys(categorias).forEach(cat => {
+    html += `<button type="button" class="chip${categoriaAtiva === cat ? ' ativo' : ''}" data-cat="${cat}">${cat}</button>`;
+  });
+  chipsContainer.innerHTML = html;
+  
+  chipsContainer.querySelectorAll('.chip').forEach(btn => {
+    btn.addEventListener('click', () => {
+      categoriaAtiva = btn.dataset.cat || null;
+      executarFiltroCategoria();
+    });
+  });
+
+  atualizarSpriteEHotspots();
+}
+
+function executarFiltroCategoria() {
+  renderChips();
+  popularDatalist(categoriaAtiva ? categorias[categoriaAtiva] : null);
+  document.getElementById('busca').value = '';
+  document.getElementById('busca').placeholder = categoriaAtiva
+    ? `Digite ou selecione uma peça de "${categoriaAtiva}"... (Ctrl+K)`
+    : 'Digite ou selecione a peça principal para abrir as correlações corretas... (Ctrl+K)';
+  
+  // Quando uma categoria inteira for selecionada, renderiza um aviso interativo na tabela
+  if(categoriaAtiva) {
+    document.getElementById('out').innerHTML = `
+      <div style="text-align:center; padding: 20px; color: var(--azul-escuro);">
+        <h3>Sistema selecionado: <b>${categoriaAtiva}</b></h3>
+        <p>Digite ou escolha uma das peças específicas deste sistema na barra de busca acima para ver a matriz CVB completa.</p>
+      </div>
+    `;
+  } else {
+    document.getElementById('out').innerHTML = `Utilize o diagrama técnico acima, clique nos botões de categoria ou use a barra de busca para carregar o mapeamento comercial baseado em valor.`;
+  }
+}
+
+// Configuração dos eventos de clique diretamente no mapa de imagem esquerdo
+document.querySelectorAll('.zona-clique').forEach(zona => {
+    zona.addEventListener('click', () => {
+        categoriaAtiva = zona.dataset.cat;
+        executarFiltroCategoria();
+    });
+});
+
+renderChips();
+
+document.addEventListener('keydown', (e) => {
+  if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+    e.preventDefault();
+    document.getElementById('busca').focus();
+    document.getElementById('busca').select();
+  }
+});
+
+function getVerificacao(nome) {
+  const chave = nome.toUpperCase().trim();
+  return verificacao[chave] || null;
+}
+
+function render(k) {
+  const itens = dados[k] || [];
+  const totalObrigatoria = itens.filter(i => i.prioridade === 'Obrigatória').length;
+  const totalRecomendada = itens.filter(i => i.prioridade === 'Recomendada').length;
+
+  let h = `<h2>${k}</h2>`;
+  h += `<div class="resumo-resultado">
+          <span class="resumo-texto">Foram encontradas <b>${itens.length}</b> conexões corretas de venda cruzada para este componente.</span>
+          <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+            <div class="indicador-prioridade">
+              <span class="indicador-item"><span class="dot dot-obrigatoria"></span>${totalObrigatoria} Obrigatória${totalObrigatoria === 1 ? '' : 's'}</span>
+              <span class="indicador-item"><span class="dot dot-recomendada"></span>${totalRecomendada} Recomendada${totalRecomendada === 1 ? '' : 's'}</span>
+            </div>
+            <button type="button" class="btn-copiar" id="btn-copiar-lista">Copiar lista de verificação</button>
+          </div>
+        </div>`;
+
+  h += `<table class='tbl'>
+          <tr>
+            <th>Outra Peça que Pode Ser Necessária</th>
+            <th>Itens a Verificar</th>
+            <th>Prioridade Comercial</th>
+            <th>Argumento Técnico Baseado em Valor (CVB)</th>
+            <th>Risco Operacional da Não Substituição</th>
+          </tr>`;
+
+  itens.forEach(i => {
+    let badgeClass = 'badge-recomendada';
+    if (i.prioridade === 'Obrigatória') badgeClass = 'badge-obrigatoria';
+
+    const verifItens = getVerificacao(i.nome);
+    let verifHtml = '<span class="no-verif">Sem itens cadastrados</span>';
+    if (verifItens && verifItens.length) {
+      verifHtml = '<ul class="verif-list">' + verifItens.map(v => `<li>${v}</li>`).join('') + '</ul>';
+    }
+
+    h += `<tr>
+            <td data-label="Peça"><b>${i.nome}</b></td>
+            <td data-label="Itens a Verificar">${verifHtml}</td>
+            <td data-label="Prioridade"><span class='badge ${badgeClass}'>${i.prioridade}</span></td>
+            <td data-label="Argumento Técnico">${i.argumento}</td>
+            <td data-label="Risco Operacional">${i.risco}</td>
+          </tr>`;
+  });
+
+  h += '</table><p class="rodape-nota"><i>Treinamento Comercial Advanced - Venda Consultiva da Linha de Peças de Reposição Nexpro. Conteúdo Técnico para Alta Performance e Segurança.</i></p>';
+  document.getElementById('out').innerHTML = h;
+
+  const btnCopiar = document.getElementById('btn-copiar-lista');
+  btnCopiar.addEventListener('click', () => {
+    let texto = `CVB - Peças correlatas e itens a verificar: ${k}\n\n`;
+    itens.forEach(i => {
+      texto += `• ${i.nome} (${i.prioridade})\n`;
+      const verifItens = getVerificacao(i.nome);
+      if (verifItens && verifItens.length) {
+        verifItens.forEach(v => texto += `   - ${v}\n`);
+      }
+      texto += '\n';
+    });
+    navigator.clipboard.writeText(texto).then(() => {
+      btnCopiar.textContent = 'Lista copiada ✓';
+      btnCopiar.classList.add('copiado');
+      setTimeout(() => {
+        btnCopiar.textContent = 'Copiar lista de verificação';
+        btnCopiar.classList.remove('copiado');
+      }, 2200);
+    });
+  });
+}
+
+document.getElementById('busca').addEventListener('input', (e) => {
+  const val = e.target.value.toUpperCase().trim();
+  if (dados[val]) {
+    render(val);
+    
+    for (const [cat, pecasDaCat] of Object.entries(categorias)) {
+      if (pecasDaCat.includes(val)) {
+        categoriaAtiva = cat;
+        atualizarSpriteEHotspots();
+        renderChips();
+        break;
+      }
+    }
+  }
+});
+</script>
+</body>
+</html>
