@@ -21,6 +21,13 @@
 
 * { box-sizing: border-box; }
 
+svg.icone {
+    width: 1em;
+    height: 1em;
+    flex-shrink: 0;
+    vertical-align: -0.125em;
+}
+
 body {
     font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
     background: var(--cinza-fundo);
@@ -34,6 +41,25 @@ header {
     color: white;
     padding: 32px 28px;
     border-bottom: 4px solid var(--azul-medio);
+}
+.header-conteudo {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    max-width: 1300px;
+    margin: 0 auto;
+}
+.header-icone {
+    width: 52px;
+    height: 52px;
+    flex-shrink: 0;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.12);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    color: #C9DCF2;
 }
 header h1 {
     margin: 0;
@@ -56,6 +82,22 @@ main {
 
 .busca-container {
     margin-bottom: 20px;
+}
+
+.busca-wrapper {
+    position: relative;
+}
+.busca-icone {
+    position: absolute;
+    top: 50%;
+    left: 16px;
+    transform: translateY(-50%);
+    color: #A0AEC0;
+    font-size: 15px;
+    pointer-events: none;
+}
+.busca-wrapper input {
+    padding-left: 42px;
 }
 
 input {
@@ -111,6 +153,10 @@ input:focus {
     text-align: center;
     border-bottom: 1px solid var(--cinza-borda);
     padding-bottom: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
 }
 
 /* Painel Esquerdo: Mapa Interativo com Imagem Antiga */
@@ -165,6 +211,9 @@ input:focus {
     pointer-events: none;
     text-transform: uppercase;
     white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
 }
 .zona-clique:hover .zona-label, .zona-clique.ativa .zona-label {
     opacity: 1;
@@ -209,6 +258,9 @@ input:focus {
     margin-bottom: 20px;
 }
 .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
     padding: 7px 14px;
     border-radius: 20px;
     border: 1.5px solid var(--cinza-borda);
@@ -245,6 +297,9 @@ h2 {
     font-weight: 600;
     border-bottom: 2px solid var(--azul-claro);
     padding-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
 .resumo-resultado {
@@ -312,6 +367,7 @@ h2 {
     text-transform: uppercase;
     letter-spacing: 0.02em;
 }
+.tbl th svg.icone { margin-right: 6px; }
 .tbl td {
     border-bottom: 1px solid var(--cinza-borda);
     padding: 16px 12px;
@@ -326,7 +382,9 @@ h2 {
     border-radius: 20px;
     font-size: 11px;
     font-weight: 700;
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
     text-align: center;
     text-transform: uppercase;
     letter-spacing: 0.02em;
@@ -336,7 +394,7 @@ h2 {
 
 .verif-list { margin: 0; padding-left: 18px; }
 .verif-list li { margin-bottom: 5px; }
-.no-verif { color: #A0AEC0; font-style: italic; font-size: 13px; }
+.no-verif { display: inline-flex; align-items: center; gap: 5px; color: #A0AEC0; font-style: italic; font-size: 13px; }
 
 .rodape-nota {
     margin-top: 24px;
@@ -355,10 +413,23 @@ h2 {
     box-shadow: var(--sombra-elevada);
     text-align: center;
 }
+.login-icone {
+    width: 56px;
+    height: 56px;
+    margin: 0 auto 14px;
+    border-radius: 50%;
+    background: var(--azul-claro);
+    color: var(--azul-escuro);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+}
 #tela-login h2 {
     border-bottom: none;
     margin-bottom: 6px;
     padding-bottom: 0;
+    justify-content: center;
 }
 #tela-login p {
     color: var(--cinza-texto);
@@ -379,6 +450,10 @@ h2 {
     margin-top: 6px;
     transition: background .15s ease;
     font-family: inherit;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
 }
 #tela-login button:hover { background: var(--azul-medio); }
 #login-erro {
@@ -396,29 +471,57 @@ h2 {
     .tbl td { border: none; padding: 6px 0; }
     .tbl td::before { content: attr(data-label); display: block; font-size: 11px; font-weight: 700; color: var(--azul-medio); text-transform: uppercase; margin-bottom: 3px; }
 }
+
+@media (max-width: 480px) {
+    header { padding: 22px 18px; }
+    .header-conteudo { gap: 12px; }
+    .header-icone { width: 42px; height: 42px; font-size: 18px; border-radius: 10px; }
+    header h1 { font-size: 20px; }
+    header p { font-size: 12.5px; }
+    main { padding: 20px 14px 40px; }
+    .card { padding: 20px 18px; }
+    .painel-motor { padding: 14px; }
+    h2 { font-size: 20px; }
+    .chip { font-size: 12px; padding: 6px 12px; }
+    .resumo-resultado { flex-direction: column; align-items: flex-start; }
+    .btn-copiar { width: 100%; justify-content: center; }
+    #tela-login { margin: 40px auto; padding: 32px 22px; max-width: 92%; }
+}
 </style>
 </head>
 <body>
 
 <!-- Tela de Acesso -->
 <div id="tela-login">
+  <div class="login-icone"><svg class="icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="1.5"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/><circle cx="12" cy="15.3" r="0.9" fill="currentColor" stroke="none"/></svg></div>
   <h2>CVB Premium</h2>
   <p>Acesso restrito. Informe a senha para continuar.</p>
-  <input type="password" id="login-senha" placeholder="Senha de acesso">
-  <button id="btn-login">Entrar</button>
+  <div class="busca-wrapper">
+    <svg class="icone busca-icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="6.5" cy="12" r="3"/><line x1="9.3" y1="12" x2="20" y2="12"/><line x1="16" y1="12" x2="16" y2="15"/><line x1="19" y1="12" x2="19" y2="14.5"/></svg>
+    <input type="password" id="login-senha" placeholder="Senha de acesso">
+  </div>
+  <button id="btn-login"><svg class="icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M10 4H5a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h5"/><line x1="9" y1="12" x2="21" y2="12"/><polyline points="16,7 21,12 16,17"/></svg> Entrar</button>
   <div id="login-erro"></div>
 </div>
 
 <!-- Conteúdo do App -->
 <div id="app-conteudo">
   <header>
-    <h1>CVB Premium - Venda Técnica</h1>
-    <p>Análise de Peças de Reposição Linha Nexpro Iveco</p>
+    <div class="header-conteudo">
+      <div class="header-icone"><svg class="icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="8" width="12" height="8" rx="1"/><path d="M13 11h4l4 4v1h-2"/><circle cx="6" cy="18.3" r="1.6"/><circle cx="16.5" cy="18.3" r="1.6"/><line x1="7.6" y1="18.3" x2="14.9" y2="18.3"/></svg></div>
+      <div>
+        <h1>CVB Premium - Venda Técnica</h1>
+        <p>Análise de Peças de Reposição Linha Nexpro Iveco</p>
+      </div>
+    </div>
   </header>
 
   <main>
     <div class="busca-container">
-        <input id="busca" list="pecas" placeholder="Digite ou selecione a peça principal... (Ctrl+K)">
+        <div class="busca-wrapper">
+          <svg class="icone busca-icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.3" y1="15.3" x2="20.5" y2="20.5"/></svg>
+          <input id="busca" list="pecas" placeholder="Digite ou selecione a peça principal... (Ctrl+K)">
+        </div>
         <datalist id="pecas"></datalist>
     </div>
     
@@ -429,24 +532,24 @@ h2 {
       
       <!-- Painel Esquerdo: Imagem Antiga como Seletor Espacial -->
       <div class="painel-motor">
-        <div class="painel-titulo">Mapeamento Técnico: Clique na Região Desejada</div>
+        <div class="painel-titulo"><svg class="icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3.2"/><line x1="12" y1="1.5" x2="12" y2="4.3"/><line x1="12" y1="19.7" x2="12" y2="22.5"/><line x1="1.5" y1="12" x2="4.3" y2="12"/><line x1="19.7" y1="12" x2="22.5" y2="12"/></svg> Mapeamento Técnico: Clique na Região Desejada</div>
         <div class="mapa-interativo-wrapper">
           <img class="img-mapa-base" src="image_25ed21.png.webp" alt="Diagrama de Referência Geral">
           
           <!-- Hotspots sobrepostos vinculados às categorias -->
-          <div class="zona-clique z-superior" data-cat="Motor — Parte Superior"><span class="zona-label">Superior</span></div>
-          <div class="zona-inferior zona-clique z-inferior" data-cat="Motor — Parte Inferior"><span class="zona-label">Inferior</span></div>
-          <div class="zona-clique z-transmissao" data-cat="Transmissão de Força"><span class="zona-label">Transmissão</span></div>
-          <div class="zona-clique z-arrefecimento" data-cat="Arrefecimento"><span class="zona-label">Arrefecimento</span></div>
-          <div class="zona-clique z-lubrificacao" data-cat="Lubrificação"><span class="zona-label">Lubrificação</span></div>
-          <div class="zona-clique z-admissao" data-cat="Admissão e Escape"><span class="zona-label">Admissão/Escape</span></div>
-          <div class="zona-clique z-combustivel" data-cat="Injeção e Combustível"><span class="zona-label">Injeção</span></div>
+          <div class="zona-clique z-superior" data-cat="Motor — Parte Superior"><span class="zona-label"><svg class="icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="4"/><polyline points="5,11 12,4 19,11"/></svg> Superior</span></div>
+          <div class="zona-inferior zona-clique z-inferior" data-cat="Motor — Parte Inferior"><span class="zona-label"><svg class="icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="4" x2="12" y2="20"/><polyline points="5,13 12,20 19,13"/></svg> Inferior</span></div>
+          <div class="zona-clique z-transmissao" data-cat="Transmissão de Força"><span class="zona-label"><svg class="icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><polygon points="12,3 18,6.5 18,13.5 12,17 6,13.5 6,6.5"/><circle cx="12" cy="10" r="2.6"/></svg> Transmissão</span></div>
+          <div class="zona-clique z-arrefecimento" data-cat="Arrefecimento"><span class="zona-label"><svg class="icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c4 5 6 8.2 6 11.2a6 6 0 0 1-12 0C6 11.2 8 8 12 3Z"/></svg> Arrefecimento</span></div>
+          <div class="zona-clique z-lubrificacao" data-cat="Lubrificação"><span class="zona-label"><svg class="icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="10" width="9" height="8" rx="1"/><line x1="6.5" y1="10" x2="6.5" y2="7"/><path d="M12.5 12.5l7-4"/><circle cx="20" cy="8" r="1.2" fill="currentColor" stroke="none"/></svg> Lubrificação</span></div>
+          <div class="zona-clique z-admissao" data-cat="Admissão e Escape"><span class="zona-label"><svg class="icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10.5a3 3 0 1 0-2.6-4.5"/><path d="M3 13h14.5a3 3 0 1 1-2.6 4.5"/><path d="M3 18h6.5"/></svg> Admissão/Escape</span></div>
+          <div class="zona-clique z-combustivel" data-cat="Injeção e Combustível"><span class="zona-label"><svg class="icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="9" height="15" rx="1"/><line x1="3.5" y1="11" x2="12.5" y2="11"/><path d="M12.5 8.5h3l3.5 3.5v6.3a1.6 1.6 0 0 1-3.2 0v-2.8h-3.3"/></svg> Injeção</span></div>
         </div>
       </div>
 
       <!-- Painel Direito: Imagem Atual com Alinhamento por Máscara (Zoom) -->
       <div class="painel-motor">
-        <div id="motor-titulo-dinamico" class="painel-titulo">Visão Geral Nexpro: Motor Completo</div>
+        <div id="motor-titulo-dinamico" class="painel-titulo"><svg class="icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8V5a1 1 0 0 1 1-1h3"/><path d="M21 8V5a1 1 0 0 0-1-1h-3"/><path d="M3 16v3a1 1 0 0 0 1 1h3"/><path d="M21 16v3a1 1 0 0 1-1 1h-3"/></svg> <span id="motor-titulo-texto">Visão Geral Nexpro: Motor Completo</span></div>
         <div class="motor-sprite-wrapper">
           <img id="motor-sprite-img" class="motor-sprite-img" src="image_27aafd.png" alt="Componentes de Reposição Nexpro">
         </div>
@@ -454,7 +557,7 @@ h2 {
 
     </div>
 
-    <div id="out" class="card">Utilize o diagrama técnico acima, clique nos botões de categoria ou use a barra de busca para carregar o mapeamento comercial baseado em valor.</div>
+    <div id="out" class="card"><svg class="icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><line x1="12" y1="11" x2="12" y2="16.3"/><circle cx="12" cy="7.6" r="0.9" fill="currentColor" stroke="none"/></svg> Utilize o diagrama técnico acima, clique nos botões de categoria ou use a barra de busca para carregar o mapeamento comercial baseado em valor.</div>
   </main>
 </div>
 
@@ -648,10 +751,36 @@ const dados = {
   ]
 };
 
+const ICONS = {
+  search: '<circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.3" y1="15.3" x2="20.5" y2="20.5"/>',
+  grid: '<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>',
+  arrowup: '<line x1="12" y1="20" x2="12" y2="4"/><polyline points="5,11 12,4 19,11"/>',
+  arrowdown: '<line x1="12" y1="4" x2="12" y2="20"/><polyline points="5,13 12,20 19,13"/>',
+  gear: '<polygon points="12,3 18,6.5 18,13.5 12,17 6,13.5 6,6.5"/><circle cx="12" cy="10" r="2.6"/>',
+  droplet: '<path d="M12 3c4 5 6 8.2 6 11.2a6 6 0 0 1-12 0C6 11.2 8 8 12 3Z"/>',
+  oilcan: '<rect x="3.5" y="10" width="9" height="8" rx="1"/><line x1="6.5" y1="10" x2="6.5" y2="7"/><path d="M12.5 12.5l7-4"/><circle cx="20" cy="8" r="1.2" fill="currentColor" stroke="none"/>',
+  wind: '<path d="M3 8h10.5a3 3 0 1 0-2.6-4.5"/><path d="M3 13h14.5a3 3 0 1 1-2.6 4.5"/><path d="M3 18h6.5"/>',
+  fuel: '<rect x="3.5" y="5" width="9" height="15" rx="1"/><line x1="3.5" y1="11" x2="12.5" y2="11"/><path d="M12.5 8.5h3l3.5 3.5v6.3a1.6 1.6 0 0 1-3.2 0v-2.8h-3.3"/>',
+  info: '<circle cx="12" cy="12" r="9"/><line x1="12" y1="11" x2="12" y2="16.3"/><circle cx="12" cy="7.6" r="0.9" fill="currentColor" stroke="none"/>',
+  alert: '<circle cx="12" cy="12" r="9"/><line x1="12" y1="7" x2="12" y2="13.3"/><circle cx="12" cy="16.6" r="0.9" fill="currentColor" stroke="none"/>',
+  help: '<circle cx="12" cy="12" r="9"/><path d="M9.3 9.3a2.8 2.8 0 1 1 3.9 2.6c-.9.4-1.2 1-1.2 1.9"/><circle cx="12" cy="16.6" r="0.9" fill="currentColor" stroke="none"/>',
+  box: '<path d="M12 3 4 7v10l8 4 8-4V7l-8-4Z"/><path d="M4 7l8 4 8-4"/><line x1="12" y1="11" x2="12" y2="21"/>',
+  link: '<path d="M10 13.5a5 5 0 0 0 7.5.4l2.6-2.6a5 5 0 0 0-7-7l-1.5 1.5"/><path d="M14 10.5a5 5 0 0 0-7.5-.4l-2.6 2.6a5 5 0 0 0 7 7l1.5-1.5"/>',
+  checklist: '<rect x="3.5" y="4" width="17" height="16" rx="1.5"/><polyline points="7,11 9,13 13,9"/><line x1="7" y1="16" x2="17" y2="16"/>',
+  flag: '<line x1="5" y1="3" x2="5" y2="21"/><path d="M5 4h12l-3 4 3 4H5Z"/>',
+  message: '<path d="M4 5h16a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H9l-4 4v-4H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Z"/><line x1="7" y1="9.5" x2="17" y2="9.5"/><line x1="7" y1="13" x2="13" y2="13"/>',
+  warning: '<path d="M12 3 2 20h20L12 3Z"/><line x1="12" y1="10" x2="12" y2="15"/><circle cx="12" cy="17.5" r="0.9" fill="currentColor" stroke="none"/>',
+  clipboard: '<rect x="5" y="5" width="14" height="16" rx="1.5"/><rect x="9" y="3" width="6" height="3.5" rx="1"/><line x1="8" y1="11" x2="16" y2="11"/><line x1="8" y1="15" x2="16" y2="15"/>',
+  check: '<polyline points="4,12.5 9.5,18 20,5"/>'
+};
+function ic(nome) {
+  return `<svg class="icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${ICONS[nome] || ''}</svg>`;
+}
+
 const dl = document.getElementById('pecas');
 const chipsContainer = document.getElementById('chips-categoria');
 const imgSprite = document.getElementById('motor-sprite-img');
-const motorTituloDin = document.getElementById('motor-titulo-dinamico');
+const motorTituloDin = document.getElementById('motor-titulo-texto');
 let categoriaAtiva = null;
 
 function popularDatalist(filtroChaves) {
@@ -685,10 +814,21 @@ function atualizarSpriteEHotspots() {
   });
 }
 
+const iconesCategorias = {
+  "Motor — Parte Superior": "arrowup",
+  "Motor — Parte Inferior": "arrowdown",
+  "Transmissão de Força": "gear",
+  "Arrefecimento": "droplet",
+  "Lubrificação": "oilcan",
+  "Admissão e Escape": "wind",
+  "Injeção e Combustível": "fuel"
+};
+
 function renderChips() {
-  let html = `<button type="button" class="chip${categoriaAtiva === null ? ' ativo' : ''}" data-cat="">Todas as Peças</button>`;
+  let html = `<button type="button" class="chip${categoriaAtiva === null ? ' ativo' : ''}" data-cat="">${ic('grid')} Todas as Peças</button>`;
   Object.keys(categorias).forEach(cat => {
-    html += `<button type="button" class="chip${categoriaAtiva === cat ? ' ativo' : ''}" data-cat="${cat}">${cat}</button>`;
+    const icone = iconesCategorias[cat] || 'info';
+    html += `<button type="button" class="chip${categoriaAtiva === cat ? ' ativo' : ''}" data-cat="${cat}">${ic(icone)} ${cat}</button>`;
   });
   chipsContainer.innerHTML = html;
   
@@ -712,14 +852,15 @@ function executarFiltroCategoria() {
   
   // Quando uma categoria inteira for selecionada, renderiza um aviso interativo na tabela
   if(categoriaAtiva) {
+    const icone = iconesCategorias[categoriaAtiva] || 'info';
     document.getElementById('out').innerHTML = `
       <div style="text-align:center; padding: 20px; color: var(--azul-escuro);">
-        <h3>Sistema selecionado: <b>${categoriaAtiva}</b></h3>
-        <p>Digite ou escolha uma das peças específicas deste sistema na barra de busca acima para ver a matriz CVB completa.</p>
+        <h3>${ic(icone)} Sistema selecionado: <b>${categoriaAtiva}</b></h3>
+        <p>${ic('search')} Digite ou escolha uma das peças específicas deste sistema na barra de busca acima para ver a matriz CVB completa.</p>
       </div>
     `;
   } else {
-    document.getElementById('out').innerHTML = `Utilize o diagrama técnico acima, clique nos botões de categoria ou use a barra de busca para carregar o mapeamento comercial baseado em valor.`;
+    document.getElementById('out').innerHTML = `${ic('info')} Utilize o diagrama técnico acima, clique nos botões de categoria ou use a barra de busca para carregar o mapeamento comercial baseado em valor.`;
   }
 }
 
@@ -751,7 +892,7 @@ function render(k) {
   const totalObrigatoria = itens.filter(i => i.prioridade === 'Obrigatória').length;
   const totalRecomendada = itens.filter(i => i.prioridade === 'Recomendada').length;
 
-  let h = `<h2>${k}</h2>`;
+  let h = `<h2>${ic('box')} ${k}</h2>`;
   h += `<div class="resumo-resultado">
           <span class="resumo-texto">Foram encontradas <b>${itens.length}</b> conexões corretas de venda cruzada para este componente.</span>
           <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
@@ -759,25 +900,26 @@ function render(k) {
               <span class="indicador-item"><span class="dot dot-obrigatoria"></span>${totalObrigatoria} Obrigatória${totalObrigatoria === 1 ? '' : 's'}</span>
               <span class="indicador-item"><span class="dot dot-recomendada"></span>${totalRecomendada} Recomendada${totalRecomendada === 1 ? '' : 's'}</span>
             </div>
-            <button type="button" class="btn-copiar" id="btn-copiar-lista">Copiar lista de verificação</button>
+            <button type="button" class="btn-copiar" id="btn-copiar-lista">${ic('clipboard')}Copiar lista de verificação</button>
           </div>
         </div>`;
 
   h += `<table class='tbl'>
           <tr>
-            <th>Outra Peça que Pode Ser Necessária</th>
-            <th>Itens a Verificar</th>
-            <th>Prioridade Comercial</th>
-            <th>Argumento Técnico Baseado em Valor (CVB)</th>
-            <th>Risco Operacional da Não Substituição</th>
+            <th>${ic('link')}Outra Peça que Pode Ser Necessária</th>
+            <th>${ic('checklist')}Itens a Verificar</th>
+            <th>${ic('flag')}Prioridade Comercial</th>
+            <th>${ic('message')}Argumento Técnico Baseado em Valor (CVB)</th>
+            <th>${ic('warning')}Risco Operacional da Não Substituição</th>
           </tr>`;
 
   itens.forEach(i => {
     let badgeClass = 'badge-recomendada';
-    if (i.prioridade === 'Obrigatória') badgeClass = 'badge-obrigatoria';
+    let badgeIcone = 'info';
+    if (i.prioridade === 'Obrigatória') { badgeClass = 'badge-obrigatoria'; badgeIcone = 'alert'; }
 
     const verifItens = getVerificacao(i.nome);
-    let verifHtml = '<span class="no-verif">Sem itens cadastrados</span>';
+    let verifHtml = `<span class="no-verif">${ic('help')}Sem itens cadastrados</span>`;
     if (verifItens && verifItens.length) {
       verifHtml = '<ul class="verif-list">' + verifItens.map(v => `<li>${v}</li>`).join('') + '</ul>';
     }
@@ -785,7 +927,7 @@ function render(k) {
     h += `<tr>
             <td data-label="Peça"><b>${i.nome}</b></td>
             <td data-label="Itens a Verificar">${verifHtml}</td>
-            <td data-label="Prioridade"><span class='badge ${badgeClass}'>${i.prioridade}</span></td>
+            <td data-label="Prioridade"><span class='badge ${badgeClass}'>${ic(badgeIcone)}${i.prioridade}</span></td>
             <td data-label="Argumento Técnico">${i.argumento}</td>
             <td data-label="Risco Operacional">${i.risco}</td>
           </tr>`;
@@ -806,10 +948,10 @@ function render(k) {
       texto += '\n';
     });
     navigator.clipboard.writeText(texto).then(() => {
-      btnCopiar.textContent = 'Lista copiada ✓';
+      btnCopiar.innerHTML = `${ic('check')}Lista copiada`;
       btnCopiar.classList.add('copiado');
       setTimeout(() => {
-        btnCopiar.textContent = 'Copiar lista de verificação';
+        btnCopiar.innerHTML = `${ic('clipboard')}Copiar lista de verificação`;
         btnCopiar.classList.remove('copiado');
       }, 2200);
     });
