@@ -1522,49 +1522,57 @@ function render(k) {
 const BASE_OBJECOES = [
   {
     chave: 'preco',
-    gatilhos: ['caro', 'car[oa]', 'preço', 'preco', 'desconto', 'barato', 'valor alto', 'mais barat'],
+    gatilhos: ['caro', 'cara', 'pre[çc]o', 'preco', 'desconto', 'barato', 'valor alto', 'mais barat', 'muito alto'],
     variacoes: [
-      (p, item) => `*O Risco Real:* Comparar apenas o preço de tabela ignora o custo total. Uma peça fora da linha Nexpro pode falhar antes do previsto, e como ${item ? `"${item.nome}"` : 'os itens correlatos'} dependem diretamente de ${p}, o cliente corre o risco de pagar duas vezes: uma pela peça barata e outra pela parada do veículo.\n\n*Script de Venda:* "Entendo a preocupação com o orçamento. Mas olha, o preço da Nexpro já considera a vida útil homologada para uso comercial pesado — uma peça genérica pode custar 20% menos hoje, mas o retrabalho e o tempo parado custam muito mais. Vamos calcular juntos o custo por km rodado?"`,
-      (p, item) => `*O Risco Real:* O barato pode sair caro depois. ${item ? `${item.argumento}` : 'A peça correlata tem função estrutural no sistema'} — trocar por algo fora de linha pode comprometer a garantia de toda a montagem.\n\n*Script de Venda:* "Posso te mostrar uma forma de fechar isso dentro do seu orçamento: damos prioridade ao item Obrigatório agora e deixamos o Recomendado para a próxima revisão, sem comprometer a segurança imediata do veículo. Assim você não perde o prazo nem a qualidade."`,
-      (p, item) => `*O Risco Real:* Pneu, peça de freio ou suspensão fora de linha tendem a parecer "economia" no curto prazo, mas o desgaste prematuro que isso gera${item ? ` (${item.risco.toLowerCase()})` : ''} acaba provocando uma nova parada em poucos meses — e aí o custo dobra.\n\n*Script de Venda:* "Vou te passar o comparativo: a diferença de preço entre a peça genuína e a paralela equivale a menos de um dia de veículo parado. Faz sentido proteger o investimento com a peça certa?"`
+      (p, item) => `*O Risco Real:* Avaliar somente o preço da peça pode esconder o custo maior: retrabalho, nova desmontagem e veículo parado. Em um veículo comercial, a parada costuma pesar mais do que a diferença entre uma peça homologada e uma alternativa sem a mesma segurança técnica.\n\n*Script de Venda:* "Entendo sua preocupação com o valor. Minha recomendação é olhar o custo total da manutenção, não só o preço da peça. Se economizarmos agora e houver falha depois, o veículo pode parar novamente e gerar um custo maior. Vamos priorizar os itens obrigatórios para proteger a operação?"`,
+
+      (p, item) => `*O Risco Real:* ${item ? item.argumento : 'Os itens correlatos existem porque trabalham em conjunto com a peça principal.'} Ignorar essa relação pode gerar desgaste prematuro, vazamento, perda de eficiência ou nova intervenção no mesmo sistema.\n\n*Script de Venda:* "Podemos separar a proposta em duas etapas: primeiro os itens obrigatórios, que protegem a montagem e reduzem risco imediato; depois os recomendados, que ajudam na vida útil do conjunto. Assim você decide com prioridade técnica, não só por preço."`
     ]
   },
+
   {
     chave: 'orcamento',
-    gatilhos: ['orçamento', 'orcamento', 'não tenho dinheiro', 'nao tenho dinheiro', 'autoriza', 'aprovação', 'aprovacao', 'financeiro', 'verba', 'sem caixa'],
+    gatilhos: ['or[çc]amento', 'sem caixa', 'financeiro', 'verba', 'aprova[çc][ãa]o', 'aprovar', 'autoriza', 'n[ãa]o tenho dinheiro'],
     variacoes: [
-      (p, item) => `*O Risco Real:* Sem aprovação do orçamento agora, o item ${item ? `"${item.nome}"` : 'correlato'} fica pendente e o veículo roda com risco aumentado de pane — o que pode gerar uma despesa não planejada bem maior depois.\n\n*Script de Venda:* "Posso fracionar isso para você: fazemos agora os itens marcados como Obrigatórios, que são os de risco de segurança, e deixamos os Recomendados para a próxima manutenção programada. Assim cabe no orçamento atual sem deixar o veículo desprotegido."`,
-      (p, item) => `*O Risco Real:* Postergar a aprovação não elimina o problema, só transfere o risco para um momento sem planejamento — geralmente no meio de uma viagem ou rota comercial.\n\n*Script de Venda:* "Entendo que o orçamento precisa de aprovação. Vou te preparar um relatório com prioridade clara — obrigatório vs recomendado — para facilitar a aprovação interna. Posso enviar agora pelo WhatsApp para você levar à diretoria?"`
+      (p, item) => `*O Risco Real:* Quando o orçamento é reduzido, o maior risco é cortar justamente um item que protege a montagem. Isso pode transformar uma manutenção planejada em uma parada corretiva mais cara.\n\n*Script de Venda:* "Entendo que existe limite de orçamento. Por isso vou separar tecnicamente o que é obrigatório do que é recomendado. Assim você consegue aprovar primeiro o que evita risco de retrabalho e deixa o restante programado para a próxima revisão."`,
+
+      (p, item) => `*O Risco Real:* Adiar a aprovação não elimina o problema; apenas transfere o risco para o uso diário do veículo. Se o componente falhar em rota, o custo costuma envolver peça, mão de obra, parada e possível perda operacional.\n\n*Script de Venda:* "Posso montar uma justificativa objetiva para você encaminhar internamente: peça principal, itens correlatos, prioridade e risco de não substituir. Isso facilita a aprovação sem parecer uma venda empurrada."`
     ]
   },
+
   {
     chave: 'tempo',
-    gatilhos: ['tempo', 'pressa', 'urgente', 'depois', 'rapido', 'rápido', 'demora', 'agora não', 'agora nao', 'sem tempo'],
+    gatilhos: ['tempo', 'pressa', 'urgente', 'depois', 'r[áa]pido', 'rapido', 'demora', 'agora n[ãa]o', 'sem tempo'],
     variacoes: [
-      (p, item) => `*O Risco Real:* Rodar com pressa sem revisar os itens correlatos de ${p} é exatamente o cenário onde panes acontecem — geralmente na pior hora, no meio de uma rota.\n\n*Script de Venda:* "Eu entendo a pressa, e por isso mesmo recomendo resolver agora: a instalação completa leva muito menos tempo que uma parada não planejada na estrada. Posso adiantar a separação das peças enquanto você decide?"`,
-      (p, item) => `*O Risco Real:* Esse tipo de falha${item ? ` (${item.risco.toLowerCase()})` : ''} normalmente não dá aviso — o veículo simplesmente para, e aí o "tempo perdido" é muito maior do que os minutos da revisão completa hoje.\n\n*Script de Venda:* "Justamente porque o tempo é curto, vamos priorizar: faço a troca da peça principal agora e já deixo reservados os itens Obrigatórios para você não precisar voltar essa semana."`
+      (p, item) => `*O Risco Real:* Ganhar tempo deixando de revisar itens correlatos pode gerar uma nova parada em pouco tempo. A desmontagem já aberta é o melhor momento para avaliar o conjunto com menor custo de intervenção.\n\n*Script de Venda:* "Justamente por você precisar do veículo rodando, vale resolver corretamente agora. Revisar os itens obrigatórios durante essa manutenção evita retorno desnecessário e reduz o risco de parada fora da oficina."`,
+
+      (p, item) => `*O Risco Real:* ${item ? item.risco : 'Uma falha no sistema pode causar parada inesperada e retrabalho.'} Em veículo comercial, uma parada não programada costuma custar mais do que alguns minutos extras de verificação.\n\n*Script de Venda:* "Podemos ser objetivos: eu separo somente os itens obrigatórios ligados a ${p} e deixo os recomendados identificados para revisão futura. Assim você não perde tempo com itens sem prioridade."`
     ]
   },
+
   {
     chave: 'recondicionada',
-    gatilhos: ['recondicionada', 'recondicionado', 'usada', 'usado', 'seminova', 'paralelo', 'paralela', 'mercado paralelo', 'não original', 'nao original'],
+    gatilhos: ['recondicionad[ao]', 'usad[ao]', 'seminov[ao]', 'paralel[ao]', 'mercado paralelo', 'n[ãa]o original', 'nao original', 'similar'],
     variacoes: [
-      (p, item) => `*O Risco Real:* Peças recondicionadas ou de mercado paralelo não passam pelos mesmos critérios de fadiga e tolerância da linha Nexpro. ${item ? item.argumento : 'O ajuste fino do sistema'} fica comprometido, mesmo que visualmente pareça igual.\n\n*Script de Venda:* "Eu entendo a tentação do preço, mas uma peça recondicionada não tem rastreabilidade de uso anterior — você não sabe quantos km ou qual esforço ela já sofreu. Com a Nexpro original, você tem garantia de fábrica e previsibilidade total."`,
-      (p, item) => `*O Risco Real:* O maior problema da peça paralela não é a peça em si, é o efeito cascata: ${item ? `"${item.nome}"` : 'os itens correlatos'} podem não encaixar corretamente, gerando desgaste cruzado em outros componentes.\n\n*Script de Venda:* "Posso te mostrar a diferença na prática: separamos a peça original ao lado de uma similar para você ver a diferença de material e acabamento. Isso ajuda a justificar a escolha certa para a frota."`
+      (p, item) => `*O Risco Real:* Peças recondicionadas, usadas ou similares podem não ter histórico claro de uso, desgaste, tolerância e aplicação correta. Visualmente podem parecer adequadas, mas trabalhar fora da especificação pode comprometer o conjunto.\n\n*Script de Venda:* "Eu entendo a busca por economia, mas nesse sistema o risco não está só na peça: está no efeito que ela causa nas peças ao redor. A linha Nexpro reduz esse risco porque segue aplicação técnica definida para o veículo."`,
+
+      (p, item) => `*O Risco Real:* ${item ? item.argumento : 'Uma peça fora da especificação pode provocar desgaste cruzado em componentes ligados ao mesmo sistema.'} Isso aumenta a chance de ruído, vazamento, perda de eficiência ou necessidade de nova desmontagem.\n\n*Script de Venda:* "Se a diferença de preço for o ponto principal, vamos comparar também o risco de retrabalho. Uma peça sem procedência pode sair mais barata hoje, mas pode comprometer uma manutenção inteira."`
     ]
   },
+
   {
     chave: 'confianca',
-    gatilhos: ['não conheço', 'nao conheco', 'nunca ouvi', 'confiança', 'confianca', 'garantia', 'marca desconhecida', 'qualidade'],
+    gatilhos: ['n[ãa]o conhe[çc]o', 'nunca ouvi', 'confian[çc]a', 'garantia', 'qualidade', 'marca desconhecida', 'proced[êe]ncia'],
     variacoes: [
-      (p, item) => `*O Risco Real:* A insegurança em relação à marca é compreensível, mas optar por algo "conhecido" sem ser homologado pode anular a garantia de ${p}.\n\n*Script de Venda:* "A Nexpro é a linha de reposição homologada pela própria Iveco — ou seja, segue exatamente a especificação de fábrica. Posso te mostrar a documentação técnica e a garantia para você levar mais segurança na decisão."`
+      (p, item) => `*O Risco Real:* A dúvida sobre procedência é válida. Em peças de reposição, o problema não é apenas funcionar no momento da instalação, mas manter desempenho, encaixe e durabilidade durante o uso comercial.\n\n*Script de Venda:* "A recomendação pela Nexpro é técnica: aplicação correta, procedência e menor risco de retrabalho. Posso te mostrar quais itens são obrigatórios e por que eles protegem a montagem de ${p}."`
     ]
   },
+
   {
     chave: 'pesquisar',
-    gatilhos: ['pesquisar', 'comparar', 'outro fornecedor', 'concorrente', 'vou ver em outro lugar', 'cotação', 'cotacao'],
+    gatilhos: ['pesquisar', 'comparar', 'outro fornecedor', 'concorrente', 'vou ver em outro lugar', 'cota[çc][ãa]o', 'cotacao'],
     variacoes: [
-      (p, item) => `*O Risco Real:* Comparar preços é saudável, mas comparações sem considerar o pacote completo de ${p} (peça + itens correlatos + garantia) costuma subestimar o custo real da concorrência.\n\n*Script de Venda:* "Faz todo sentido pesquisar. Só sugiro comparar o pacote completo: nossa proposta já inclui os itens Obrigatórios para a instalação correta. Posso te enviar agora por WhatsApp para facilitar a comparação?"`
+      (p, item) => `*O Risco Real:* Comparar preço é correto, mas a comparação precisa considerar aplicação, procedência, itens correlatos e risco operacional. Uma cotação menor pode não incluir tudo o que protege a manutenção.\n\n*Script de Venda:* "Faz sentido comparar. Só recomendo comparar o pacote completo: peça principal, itens obrigatórios, risco de retrabalho e procedência. Posso te enviar a proposta organizada dessa forma para facilitar sua decisão."`
     ]
   }
 ];
