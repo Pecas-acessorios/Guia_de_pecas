@@ -1522,72 +1522,178 @@ function render(k) {
 const BASE_OBJECOES = [
   {
     chave: 'preco',
-    gatilhos: ['caro', 'cara', 'pre[çc]o', 'preco', 'desconto', 'barato', 'valor alto', 'mais barat', 'muito alto'],
+    gatilhos: ['caro', 'cara', 'preco', 'desconto', 'barato', 'valor alto', 'mais barato', 'muito alto'],
     variacoes: [
-      (p, item) => `*O Risco Real:* Avaliar somente o preço da peça pode esconder o custo maior: retrabalho, nova desmontagem e veículo parado. Em um veículo comercial, a parada costuma pesar mais do que a diferença entre uma peça homologada e uma alternativa sem a mesma segurança técnica.\n\n*Script de Venda:* "Entendo sua preocupação com o valor. Minha recomendação é olhar o custo total da manutenção, não só o preço da peça. Se economizarmos agora e houver falha depois, o veículo pode parar novamente e gerar um custo maior. Vamos priorizar os itens obrigatórios para proteger a operação?"`,
-
-      (p, item) => `*O Risco Real:* ${item ? item.argumento : 'Os itens correlatos existem porque trabalham em conjunto com a peça principal.'} Ignorar essa relação pode gerar desgaste prematuro, vazamento, perda de eficiência ou nova intervenção no mesmo sistema.\n\n*Script de Venda:* "Podemos separar a proposta em duas etapas: primeiro os itens obrigatórios, que protegem a montagem e reduzem risco imediato; depois os recomendados, que ajudam na vida útil do conjunto. Assim você decide com prioridade técnica, não só por preço."`
+      (p, item) => ({
+        sondagem: 'Esse valor preocupa mais pelo orçamento atual ou pelo receio de não compensar no longo prazo?',
+        risco: `Avaliar somente o preço pode esconder custos maiores, como retrabalho, nova desmontagem e veículo parado. ${item ? item.risco : 'Em veículo comercial, parada não programada costuma custar mais que a diferença entre peças.'}`,
+        resposta: `Entendo a preocupação com o valor. Minha recomendação é olhar o custo total da manutenção, não só o preço da peça. Se economizarmos agora e houver falha depois, o veículo pode parar novamente e gerar um custo maior.`,
+        proximoPasso: 'Separar os itens obrigatórios dos recomendados e priorizar o que reduz risco imediato.'
+      })
     ]
   },
 
   {
     chave: 'orcamento',
-    gatilhos: ['or[çc]amento', 'sem caixa', 'financeiro', 'verba', 'aprova[çc][ãa]o', 'aprovar', 'autoriza', 'n[ãa]o tenho dinheiro'],
+    gatilhos: ['orcamento', 'sem caixa', 'financeiro', 'verba', 'aprovacao', 'aprovar', 'autoriza', 'nao tenho dinheiro'],
     variacoes: [
-      (p, item) => `*O Risco Real:* Quando o orçamento é reduzido, o maior risco é cortar justamente um item que protege a montagem. Isso pode transformar uma manutenção planejada em uma parada corretiva mais cara.\n\n*Script de Venda:* "Entendo que existe limite de orçamento. Por isso vou separar tecnicamente o que é obrigatório do que é recomendado. Assim você consegue aprovar primeiro o que evita risco de retrabalho e deixa o restante programado para a próxima revisão."`,
-
-      (p, item) => `*O Risco Real:* Adiar a aprovação não elimina o problema; apenas transfere o risco para o uso diário do veículo. Se o componente falhar em rota, o custo costuma envolver peça, mão de obra, parada e possível perda operacional.\n\n*Script de Venda:* "Posso montar uma justificativa objetiva para você encaminhar internamente: peça principal, itens correlatos, prioridade e risco de não substituir. Isso facilita a aprovação sem parecer uma venda empurrada."`
+      (p, item) => ({
+        sondagem: 'Você precisa reduzir o valor total ou precisa justificar melhor a aprovação internamente?',
+        risco: `Cortar item obrigatório pode transformar uma manutenção planejada em uma parada corretiva mais cara. ${item ? item.argumento : 'Os itens correlatos protegem a montagem e reduzem chance de retrabalho.'}`,
+        resposta: `Podemos organizar a proposta por prioridade técnica: primeiro o que é obrigatório para proteger a montagem, depois o que é recomendado para aumentar vida útil.`,
+        proximoPasso: 'Gerar uma justificativa objetiva com peça principal, itens obrigatórios, recomendados e risco de não substituição.'
+      })
     ]
   },
 
   {
     chave: 'tempo',
-    gatilhos: ['tempo', 'pressa', 'urgente', 'depois', 'r[áa]pido', 'rapido', 'demora', 'agora n[ãa]o', 'sem tempo'],
+    gatilhos: ['tempo', 'pressa', 'urgente', 'depois', 'rapido', 'demora', 'agora nao', 'sem tempo'],
     variacoes: [
-      (p, item) => `*O Risco Real:* Ganhar tempo deixando de revisar itens correlatos pode gerar uma nova parada em pouco tempo. A desmontagem já aberta é o melhor momento para avaliar o conjunto com menor custo de intervenção.\n\n*Script de Venda:* "Justamente por você precisar do veículo rodando, vale resolver corretamente agora. Revisar os itens obrigatórios durante essa manutenção evita retorno desnecessário e reduz o risco de parada fora da oficina."`,
-
-      (p, item) => `*O Risco Real:* ${item ? item.risco : 'Uma falha no sistema pode causar parada inesperada e retrabalho.'} Em veículo comercial, uma parada não programada costuma custar mais do que alguns minutos extras de verificação.\n\n*Script de Venda:* "Podemos ser objetivos: eu separo somente os itens obrigatórios ligados a ${p} e deixo os recomendados identificados para revisão futura. Assim você não perde tempo com itens sem prioridade."`
+      (p, item) => ({
+        sondagem: 'O veículo está parado agora ou ainda está rodando em operação?',
+        risco: `Deixar de revisar itens correlatos pode gerar nova parada em pouco tempo. ${item ? item.risco : 'A desmontagem já aberta é o melhor momento para verificar o conjunto.'}`,
+        resposta: `Justamente por você precisar do veículo rodando, vale resolver corretamente agora. Revisar os itens obrigatórios durante essa manutenção evita retorno desnecessário.`,
+        proximoPasso: 'Focar somente nos itens obrigatórios ligados à peça principal e deixar os recomendados programados.'
+      })
     ]
   },
 
   {
     chave: 'recondicionada',
-    gatilhos: ['recondicionad[ao]', 'usad[ao]', 'seminov[ao]', 'paralel[ao]', 'mercado paralelo', 'n[ãa]o original', 'nao original', 'similar'],
+    gatilhos: ['recondicionada', 'recondicionado', 'usada', 'usado', 'seminova', 'seminovo', 'paralela', 'paralelo', 'mercado paralelo', 'nao original', 'similar'],
     variacoes: [
-      (p, item) => `*O Risco Real:* Peças recondicionadas, usadas ou similares podem não ter histórico claro de uso, desgaste, tolerância e aplicação correta. Visualmente podem parecer adequadas, mas trabalhar fora da especificação pode comprometer o conjunto.\n\n*Script de Venda:* "Eu entendo a busca por economia, mas nesse sistema o risco não está só na peça: está no efeito que ela causa nas peças ao redor. A linha Nexpro reduz esse risco porque segue aplicação técnica definida para o veículo."`,
-
-      (p, item) => `*O Risco Real:* ${item ? item.argumento : 'Uma peça fora da especificação pode provocar desgaste cruzado em componentes ligados ao mesmo sistema.'} Isso aumenta a chance de ruído, vazamento, perda de eficiência ou necessidade de nova desmontagem.\n\n*Script de Venda:* "Se a diferença de preço for o ponto principal, vamos comparar também o risco de retrabalho. Uma peça sem procedência pode sair mais barata hoje, mas pode comprometer uma manutenção inteira."`
+      (p, item) => ({
+        sondagem: 'A escolha pela peça recondicionada é por preço, disponibilidade ou indicação da oficina?',
+        risco: `Peças usadas, similares ou recondicionadas podem não ter histórico claro de desgaste, aplicação e tolerância. ${item ? item.argumento : 'Isso pode comprometer o conjunto mesmo que a peça pareça correta visualmente.'}`,
+        resposta: `Entendo a busca por economia, mas nesse sistema o risco não está só na peça: está no efeito que ela causa nas peças ao redor. A escolha técnica reduz risco de retrabalho.`,
+        proximoPasso: 'Comparar não apenas o preço, mas procedência, aplicação correta e risco de nova desmontagem.'
+      })
     ]
   },
 
   {
     chave: 'confianca',
-    gatilhos: ['n[ãa]o conhe[çc]o', 'nunca ouvi', 'confian[çc]a', 'garantia', 'qualidade', 'marca desconhecida', 'proced[êe]ncia'],
+    gatilhos: ['nao conheco', 'nunca ouvi', 'confianca', 'garantia', 'qualidade', 'marca desconhecida', 'procedencia'],
     variacoes: [
-      (p, item) => `*O Risco Real:* A dúvida sobre procedência é válida. Em peças de reposição, o problema não é apenas funcionar no momento da instalação, mas manter desempenho, encaixe e durabilidade durante o uso comercial.\n\n*Script de Venda:* "A recomendação pela Nexpro é técnica: aplicação correta, procedência e menor risco de retrabalho. Posso te mostrar quais itens são obrigatórios e por que eles protegem a montagem de ${p}."`
+      (p, item) => ({
+        sondagem: 'Sua dúvida é sobre a marca, sobre a aplicação correta ou sobre a garantia da peça?',
+        risco: `Em reposição, o problema não é apenas instalar e funcionar no momento. A peça precisa manter encaixe, desempenho e durabilidade durante o uso comercial.`,
+        resposta: `A recomendação é técnica: aplicação correta, procedência e menor risco de retrabalho. Posso mostrar quais itens são obrigatórios e por que eles protegem a montagem de ${p}.`,
+        proximoPasso: 'Apresentar os itens obrigatórios junto com o risco operacional de não substituir.'
+      })
     ]
   },
 
   {
     chave: 'pesquisar',
-    gatilhos: ['pesquisar', 'comparar', 'outro fornecedor', 'concorrente', 'vou ver em outro lugar', 'cota[çc][ãa]o', 'cotacao'],
+    gatilhos: ['pesquisar', 'comparar', 'outro fornecedor', 'concorrente', 'vou ver em outro lugar', 'cotacao'],
     variacoes: [
-      (p, item) => `*O Risco Real:* Comparar preço é correto, mas a comparação precisa considerar aplicação, procedência, itens correlatos e risco operacional. Uma cotação menor pode não incluir tudo o que protege a manutenção.\n\n*Script de Venda:* "Faz sentido comparar. Só recomendo comparar o pacote completo: peça principal, itens obrigatórios, risco de retrabalho e procedência. Posso te enviar a proposta organizada dessa forma para facilitar sua decisão."`
+      (p, item) => ({
+        sondagem: 'Você quer comparar só preço ou também aplicação, procedência e itens inclusos?',
+        risco: `Uma cotação menor pode não incluir os itens necessários para proteger a manutenção. ${item ? item.risco : 'Sem comparar o pacote completo, o menor preço pode gerar maior custo depois.'}`,
+        resposta: `Faz sentido comparar. Só recomendo comparar o pacote completo: peça principal, itens obrigatórios, risco de retrabalho e procedência.`,
+        proximoPasso: 'Enviar uma proposta organizada por prioridade para facilitar a comparação.'
+      })
+    ]
+  },
+
+  {
+    chave: 'mecanico',
+    gatilhos: ['mecanico', 'oficina', 'tecnico', 'vou falar com meu mecanico', 'meu mecanico vai ver'],
+    variacoes: [
+      (p, item) => ({
+        sondagem: 'O mecânico quer validar a aplicação da peça ou avaliar se os itens correlatos são necessários?',
+        risco: `Se a análise ficar só na peça principal, itens de vedação, fixação, lubrificação ou acoplamento podem passar despercebidos. ${item ? item.argumento : 'Isso aumenta o risco de retorno após a montagem.'}`,
+        resposta: `Perfeito consultar o mecânico. Vou deixar a recomendação técnica organizada para ele validar: peça principal, itens obrigatórios e motivo da substituição.`,
+        proximoPasso: 'Enviar a lista técnica para apoiar a decisão do mecânico ou oficina.'
+      })
+    ]
+  },
+
+  {
+    chave: 'ja_troquei',
+    gatilhos: ['ja troquei', 'foi trocado', 'troquei recentemente', 'novo ainda', 'peca nova', 'acabou de trocar'],
+    variacoes: [
+      (p, item) => ({
+        sondagem: 'Essa peça foi trocada junto com quais componentes do sistema?',
+        risco: `Mesmo uma peça recente pode sofrer se trabalhar junto com componentes desgastados. ${item ? item.risco : 'A falha pode não estar na peça nova, mas no conjunto ao redor.'}`,
+        resposta: `Se a peça já foi trocada, vale conferir se os itens correlatos também estavam dentro da condição correta. Às vezes a peça nova falha cedo porque o conjunto antigo continua forçando o sistema.`,
+        proximoPasso: 'Verificar os itens obrigatórios relacionados antes de descartar a necessidade de nova intervenção.'
+      })
+    ]
+  },
+
+  {
+    chave: 'so_peca_principal',
+    gatilhos: ['quero so essa', 'somente essa', 'apenas essa', 'so a principal', 'nao quero complementares', 'sem adicionais'],
+    variacoes: [
+      (p, item) => ({
+        sondagem: 'Você quer limitar a compra por orçamento ou porque acredita que os complementares não são necessários?',
+        risco: `Trocar apenas ${p} pode resolver o sintoma, mas não necessariamente proteger a montagem. ${item ? item.argumento : 'Itens correlatos costumam existir porque trabalham junto com a peça principal.'}`,
+        resposta: `Consigo seguir somente com a peça principal, mas tecnicamente preciso te alertar sobre os itens obrigatórios. Eles não são adicionais comerciais; são pontos de proteção da montagem.`,
+        proximoPasso: 'Mostrar primeiro os obrigatórios e deixar os recomendados como segunda etapa.'
+      })
     ]
   }
 ];
 
 const FALLBACK_VARIACOES = [
-  (p, item) => `*O Risco Real:* Ignorar os itens correlatos de ${p} ou optar por peças não homologadas da linha Nexpro pode comprometer a garantia e a segurança operacional do veículo.\n\n*Script de Venda:* "Reforço que o investimento na peça genuína evita uma parada não planejada, que custa muito mais que a diferença de preço. Posso te ajudar a priorizar o que é Obrigatório agora?"`,
-  (p, item) => `*O Risco Real:* A não substituição dos itens correlatos${item ? ` — como em "${item.nome}" (${item.risco.toLowerCase()})` : ''} aumenta a chance de retrabalho e de uma nova visita do veículo ao balcão em pouco tempo.\n\n*Script de Venda:* "Vamos olhar juntos a prioridade comercial: o que é Obrigatório protege a segurança, o que é Recomendado estende a vida útil. Posso montar a proposta com essa divisão para facilitar sua decisão?"`
+  (p, item) => ({
+    sondagem: 'A dúvida do cliente é mais sobre preço, prazo, confiança na peça ou real necessidade da troca?',
+    risco: `Sem entender a objeção principal, existe risco de responder pelo motivo errado. ${item ? item.risco : 'O ideal é conectar a resposta ao risco técnico real da manutenção.'}`,
+    resposta: `Entendi. Antes de recomendar o melhor caminho, vale identificar o motivo da dúvida. Assim conseguimos separar o que é obrigatório, o que é recomendado e o que pode ser programado para depois.`,
+    proximoPasso: 'Perguntar o motivo principal da resistência e depois retomar a recomendação técnica.'
+  })
 ];
 
+function normalizarTexto(texto) {
+  return String(texto || '')
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .trim();
+}
+
 function escolherCategoria(texto) {
-  const t = texto.toLowerCase();
+  const t = normalizarTexto(texto);
+
   for (const cat of BASE_OBJECOES) {
-    if (cat.gatilhos.some(g => new RegExp(g, 'i').test(t))) return cat;
+    if (cat.gatilhos.some(gatilho => t.includes(normalizarTexto(gatilho)))) {
+      return cat;
+    }
   }
+
   return null;
+}
+
+function escolherItemReferencia(itensRelacionados) {
+  if (!itensRelacionados || !itensRelacionados.length) return null;
+
+  const obrigatorio = itensRelacionados.find(item => item.prioridade === 'Obrigatória');
+  return obrigatorio || itensRelacionados[0];
+}
+
+function escolherVariacaoEstavel(variacoes, texto) {
+  if (!variacoes || !variacoes.length) return null;
+
+  const base = normalizarTexto(texto);
+  let soma = 0;
+
+  for (let i = 0; i < base.length; i++) {
+    soma += base.charCodeAt(i);
+  }
+
+  return variacoes[soma % variacoes.length];
+}
+
+function formatarRespostaConsultor(resposta) {
+  return [
+    `Pergunta de sondagem:\n${resposta.sondagem}`,
+    `Risco técnico:\n${resposta.risco}`,
+    `Como responder:\n"${resposta.resposta}"`,
+    `Próximo passo sugerido:\n${resposta.proximoPasso}`
+  ].join('\n\n');
 }
 
 function executarConsultaIA(pecaPrincipal, itensRelacionados, objecaoCliente) {
@@ -1595,21 +1701,17 @@ function executarConsultaIA(pecaPrincipal, itensRelacionados, objecaoCliente) {
   const btnIA = document.getElementById('btn-perguntar-ia');
 
   respostaBox.style.display = 'block';
-  respostaBox.textContent = '💬 Buscando o melhor script de contorno para essa objeção...';
+  respostaBox.textContent = 'Analisando a objeção e preparando uma resposta técnica...';
   btnIA.disabled = true;
 
-  // pequeno delay artificial só para dar sensação de processamento
   setTimeout(() => {
     const categoria = escolherCategoria(objecaoCliente);
-    const itemRef = itensRelacionados && itensRelacionados.length
-      ? itensRelacionados[Math.floor(Math.random() * itensRelacionados.length)]
-      : null;
-
+    const itemRef = escolherItemReferencia(itensRelacionados);
     const variacoes = categoria ? categoria.variacoes : FALLBACK_VARIACOES;
-    const gerador = variacoes[Math.floor(Math.random() * variacoes.length)];
-    const textoResposta = gerador(pecaPrincipal, itemRef);
+    const gerador = escolherVariacaoEstavel(variacoes, objecaoCliente);
+    const resposta = gerador(pecaPrincipal, itemRef);
 
-    respostaBox.textContent = textoResposta;
+    respostaBox.textContent = formatarRespostaConsultor(resposta);
     btnIA.disabled = false;
   }, 350);
 }
